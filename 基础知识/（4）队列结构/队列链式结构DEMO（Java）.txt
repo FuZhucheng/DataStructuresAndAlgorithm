@@ -1,0 +1,125 @@
+package queuelist;
+
+public class LinkQueueTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		LinkQueue queue = new LinkQueue();
+		queue.append("a");
+		queue.append("b");
+		queue.append("c");
+		queue.append("d");
+		queue.append("e");
+		queue.append("f");
+
+		queue.delete();//删除a
+		queue.delete();//删除b
+
+		queue.append("g");//插入g到队尾
+
+		while (!queue.isEmpty()) {
+			System.out.println(queue.delete());
+		}
+	}
+
+}
+
+class LinkQueue implements Queue{
+	Node head;
+	Node tail;
+	int count;
+
+	public LinkQueue() {
+		init();
+	}
+
+	public void init() {
+		head = tail = null;
+		count = 0;
+	}
+
+	// 插入队列
+	@Override
+	public void append(Object obj) {
+		Node node = new Node(obj, null);
+		// 如果当前队列不为空。
+		if (tail != null) {
+			tail.next = node;// 队尾结点指向新结点
+		}
+		tail = node;// 设置队尾结点为新结点
+		if (head == null) {
+			head = node;
+		}
+		count++;
+	}
+
+	// 删除队头结点：
+	@Override
+	public Object delete() {
+		if (isEmpty() == true) {
+			System.out.println("队列为空！！");
+			return null;
+		}
+		Node node = head;
+		head = head.next;
+		count--;
+		return node;
+	}
+	//拿到头结点：
+	@Override
+	public Object getHead() {
+		if (isEmpty() == true) {
+			System.out.println("队列为空！！");
+			return null;
+		} else {
+			return head.getElement();
+		}
+
+	}
+
+	// 判空
+	@Override
+	public boolean isEmpty() {
+		return count == 0;
+	}
+}
+
+class Node {
+	Object element; // 数据域
+	Node next; // 指针域
+
+	// 头结点的构造方法
+	public Node(Node nextval) {
+		this.next = nextval;
+	}
+
+	// 非头结点的构造方法
+	public Node(Object obj, Node nextval) {
+		this.element = obj;
+		this.next = nextval;
+	}
+
+	// 获得当前结点的后继结点
+	public Node getNext() {
+		return this.next;
+	}
+
+	// 获得当前的数据域的值
+	public Object getElement() {
+		return this.element;
+	}
+
+	// 设置当前结点的指针域
+	public void setNext(Node nextval) {
+		this.next = nextval;
+	}
+
+	// 设置当前结点的数据域
+	public void setElement(Object obj) {
+		this.element = obj;
+	}
+
+	public String toString() {
+		return this.element.toString();
+	}
+}

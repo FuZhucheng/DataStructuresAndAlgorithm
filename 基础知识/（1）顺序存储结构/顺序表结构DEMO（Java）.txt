@@ -1,0 +1,156 @@
+
+import java.util.Scanner;
+
+/**
+ * 
+ * @author 符柱成 这是一个线性结构顺序存储结构的实例，也就是利用数组来实现的线性表的顺序存储结构
+ */
+
+class DATA {
+	String key; //学号						// 结点数据元素的数据项
+	String name;//名字
+	int age;	//年龄
+}
+
+class SLType { 											// 定义以数组来实现的线性表顺序存储结构
+	static final int MAXLEN = 100;					 // 设置顺序表的最大长度
+	DATA[] ListData = new DATA[MAXLEN + 1]; 		// 保存顺序表的结构数组
+	int ListLen; 									// 顺序表已存结点的数量
+
+	void SLInit(SLType SL) { 						// 初始化顺序表
+		SL.ListLen = 0; 								// 初始化为空表
+	}
+
+	int SLLength(SLType SL) { 						// 返回顺序表的元素数量
+		return (SL.ListLen);
+	}
+
+	// 插入操作,就是把一个新结点插到n的位置，原顺序表n位置以后包括n都往后移动一位
+	int SLInsert(SLType SL, int n, DATA data) {
+		int i;
+		if (SL.ListLen > MAXLEN) { 								// 顺序表结点数量已超过最大数量
+			System.out.print("顺序表已满，不能插入结点!\n");
+			return 0; 											// 返回0，表示插入不成功
+		}
+		if (n < 1 || n > SL.ListLen - 1) { 						// 插入结点序号不正确
+			System.out.print("插入元素序号错误，不能插入元素！\n");
+			return 0; 											// 返回0，表示插入不成功
+		}
+		for (i = SL.ListLen; i >= n; i--) { // 将顺序表从后面开始移动，遍历到n那个位置所代表的位置，将n所代表的位置的数值也往后移动一位
+			SL.ListData[i + 1] = SL.ListData[i];
+		}
+		SL.ListData[n] = data; 									// 插入结点
+		SL.ListLen++; 											// 顺序表结点数量增加1
+		return 1; 												// 成功插入，返回1
+	}
+
+	 // 增加元素到顺序表尾部
+	int SLAdd(SLType SL, DATA data) {							
+		if (SL.ListLen >= MAXLEN) {								 // 顺序表已满
+			System.out.print("顺序表已满，不能再添加结点了！\n");
+			return 0;
+		}
+		SL.ListData[++SL.ListLen] = data;					//顺序表没满就在最后的结点位置+1，在那个位置set进data
+		return 1;
+	}
+	
+	//打印出全部这个顺序表中的信息
+	int SLAll(SLType SL){
+		int i;
+		for(i=1;i<=SL.ListLen;i++){
+			System.out.printf("(%s,%s,%d)\n", SL.ListData[i].key,SL.ListData[i].name,SL.ListData[i].age);		
+			
+		}
+		return 0;
+	}
+	
+	//查询方法，根据序号返回数据元素，查询一个结点，返回一个结点
+	DATA SLFindByNum(SLType SL,int n){
+		
+		if(n<1||n>SL.ListLen+1){					//元素序号不正确则返回null
+			System.out.print("结点序号错误，不能返回结点！\n");
+			return null;
+		}
+		return SL.ListData[n];						//元素序号不为空，则返回要查询的该结点
+	}
+	
+	//根据结点信息的关键字(这里指的是学号)进行查找
+	int SLFindByCont(SLType SL,String key){
+		int i;
+		for(i=1;i<=SL.ListLen;i++){			//遍历整个顺序表
+			if(SL.ListData[i].key.compareTo(key)==0){		//找到那个结点的话就返回该结点的下标序号
+				return i;
+			}
+		}
+		return 0;						//找不到就返回0咯
+	}
+
+	//删除顺序表中的数据元素
+	int SLDelete(SLType SL,int n){
+		int i;
+		if(n<1||n>SL.ListLen+1){						//删除结点序号不正确
+			System.out.print("删除结点序号错误，不能删除结点！\n");
+			return 0;									//删除不成功就返回0咯
+		}
+		for(i=n;i<SL.ListLen;i++){
+			SL.ListData[i]=SL.ListData[i+1];			//直接访问到该数组的n下标，把他的后一个位置的结点数据赋给n下标所在的结点来删除那个数据元素
+		}
+		SL.ListLen--;									//顺序表元素数量减1
+		return 1;										//成功删除，返回1
+	}
+}
+
+public class SequentialList {
+	public static void main(String[] args) {
+		
+		int i;
+		SLType SL = new SLType(); 								// 定义顺序表变量
+		DATA pdata; 											// 定义结点保存引用变量
+		String key; 										// 保存一会操作多次的关键字
+
+		System.out.print("顺序表操作演示!\n");
+
+		SL.SLInit(SL); 										// 初始化顺序表
+
+		System.out.print("初始化顺序表完成！\n");
+
+		Scanner input = new Scanner(System.in);				 // 输入数据
+
+		while(true){												//循环添加结点数据
+			
+			System.out.print("输入添加的结点信息(学号  姓名  年龄)：");
+			DATA data = new DATA();						//初始化bean类对象
+			data.key = input.next();					//循环输入bean类各个变量
+			data.name = input.next();
+			data.age = input.nextInt();
+
+			if (data.age != 0) {						//若年龄不为0
+				if (SL.SLAdd(SL, data) == 0) {				//若添加结点失败，这个情况就是顺序表已经满了，不能再添加了，所以方法设置了返回0
+					break;								//退出循环
+				}
+			}else{									//若年龄为0
+				break;								//退出循环
+			}
+		
+		
+		}
+		System.out.print("\n顺序表中的结点顺序:\n");				//这里实现顺序表的结点全部打印
+		SL.SLAll(SL);							//输出显示全部结点数据
+		
+		System.out.print("\n要取出的结点序号:");			//这里实现顺序表查询方式，就是根据下标直接返回该结点				
+		i=input.nextInt();			//输入结点序号
+		pdata=SL.SLFindByNum(SL,i);	//查询语句，按序号查找该结点,返回该结点到pdata
+		if(pdata!=null){
+			System.out.printf("第%d个结点为：(%s,%s,%d)\n",i,pdata.key,pdata.name,pdata.age);
+		}
+		
+		System.out.print("\n要查找结点的关键字：");
+		key=input.next();							//输入关键字
+		i=SL.SLFindByCont(SL,key);					//按关键字（学号）查找，返回结点序号
+		pdata=SL.SLFindByNum(SL, i);				//按结点序号查找结点，直接返回结点
+		if(pdata!=null){							//若结点引用不为null
+			System.out.printf("第%d个结点为：(%s,%s,%d)\n",i,pdata.key,pdata.name,pdata.age);
+		}
+		
+	}
+}

@@ -1,0 +1,175 @@
+package linkedlist;
+//Java实现的链表
+import java.util.Scanner;
+class DATA2{
+	String key;						// 结点数据元素的数据项
+	String name;
+	int age;
+}
+
+//没有头结点的链表类
+class CLType{					//定义链表结构
+	DATA2 nodeData=new DATA2();		//具体数据保存在一个类DATA2中
+	CLType nextNode;	//链表的类CLType,引用nextNode是用来指向下一个结点的，每次追加重新赋值。所以存的是结点名字嘛，就是指向下一个结点了
+	
+	//追加一个结点在链表尾部.以下为类方法。head为链表头引用，输入参数nodeData为结点要保存的数据
+	CLType CLAddEnd(CLType head,DATA2 nodeData){
+		CLType node,htemp;			
+		if((node=new CLType())==null){
+			System.out.print("申请内存失败！\n");
+			return null;							//分配内存失败
+		}
+		else{
+			node.nodeData=nodeData;					//保存新数据到这个新结点的数据域
+			node.nextNode=null;						//把添加的那个结点的指针域致空
+			if(head==null){
+				head=node;					//这个是建立链表后第一次的数据插入，也就是这里是插入第一个结点。
+				return head;			//如果头结点为空，就把head的链表头指针指向那个新结点的数据域，并返回				
+			}
+			
+			htemp=head;				//以下操作是头指针已经指向存在了的结点，也就是第一个结点有数据了。而这里把头指针指向的结点给htemp来使用局部变量循环
+			while(htemp.nextNode!=null){			//查找链表的末尾。就是查找链表的结点，找到最后的那个，因为最后的那个结点的指针域是null，没有指向
+				htemp=htemp.nextNode;				//从全部结点依次赋值给htemp，直到htemp结点的指针域为空终止循环即找到了最后的结点
+			}
+			
+			htemp.nextNode=node;			//找到最后结点，就可以把传进来的新结点需要的数据用那个我们初始化的结点node来保存。
+										//进而把他赋值给我们刚刚找到的已存在链表的最后结点，然后把这个最后结点的指针域
+										//指向我们在这里创建的新的存好传进来的数据结点。即可完成为已经存在的链表追加结点
+			
+		}
+		
+		return head;						//返回头结点
+	}
+	
+	int CLLength(CLType head){
+		CLType htemp;
+		int Len=0;
+		htemp=head;
+		while(htemp!=null){
+			Len++;
+			htemp=htemp.nextNode;
+		}
+		return Len;
+	}
+	//打印出全部结点的数据
+	void CLAllNode(CLType head){
+		CLType htemp;			
+		DATA2 nodeData;
+		htemp=head;
+		System.out.printf("当前链表共有%d个结点。链表所有数据如下：\n",CLLength(head));
+		while(htemp!=null){					//把头结点赋值给htemp，然后以htemp局部变量来循环遍历，
+											//在遍历过程把结点赋值给局部变量nodeData进行打印。
+											//然后再用nextNode类似指针的东西（他指向了下一个结点的名字），赋值给局部变量htemp，htemp就保存了下一个结点的东西，htemp.Data就是取得到下一个结点的数据啦
+			nodeData=htemp.nodeData;
+			System.out.printf("结点(%s,%s,%d)",nodeData.key,nodeData.name,nodeData.age);
+			htemp=htemp.nextNode;				
+		}
+	}
+	
+	//查找结点
+	CLType CLFindNode(CLType head,String key){
+		CLType htemp;
+		htemp=head;
+		while(htemp!=null){					//以局部变量htemp来循环
+			if(htemp.nodeData.key.compareTo(key)==0){		//遍历过程对比结点的key与传过来的key，如果相同，就返回这个结点
+				return htemp;							//返回结点的引用，就是结点的名字啦,也可以说是上一个结点的指针域
+			}
+			htemp=htemp.nextNode;						//如果不相同就到下一个结点
+		}
+		return null;									//如果找不到，就返回null
+	}
+	
+	//插入结点
+	CLType CLInsertNode(CLType head,String findkey,DATA2 nodeData){
+		CLType node,nodetemp;
+		if((node=new CLType())==null){			//必然执行的 判断，也就是会new CLType这个局部变量来过度
+			return null;						//分配内存失败
+		}
+		node.nodeData=nodeData;
+		nodetemp=CLFindNode(head,findkey);		//使用方法查找到该结点
+		if(nodetemp!=null){
+			node.nextNode=nodetemp.nextNode;		//新增结点的指针域指向我们查找到的结点的下一个结点的数据域（就是查找到的结点的指针域啦）
+			nodetemp.nextNode=node;					//而我们查找到的结点的指针域则指向新增结点的数据域（就是新增结点的名字啦）
+		}
+		return head;			//返回头引用
+	}
+	
+	//删除结点
+	int CLDeleteNode(CLType head,String key){
+		CLType node,htemp;			//node表示要查找的结点的前一个结点，htemp表示要查到的结点，而他的指针域就指向了下一个结点啦
+		htemp=head;
+		node=head;
+		while(htemp!=null){
+			if(htemp.nodeData.key.compareTo(key)==0){
+				node.nextNode=htemp.nextNode;				//当找到那个要删除的结点时，就用找到的结点的指针域（就是找到的结点的下一个结点的引用）赋值给node（htemp的前一个结点），即可完成链表的删除，但还没清内存
+//				free(htemp);						//释放结点内存
+				return 1;
+				
+			}
+			else{		//就是找不到就往后推一位嘛
+				node=htemp;						//指向当前的结点
+				htemp=htemp.nextNode;			//指向下一个结点
+			}
+		}
+		return 0;			//没有删除则返回0
+	}
+	
+}
+
+
+public class LinkedList {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		CLType node,head=null;		//初始化结点，并使头指针为空.head就是我们的链表头结点引用.node为一个局部变量来接收返回的结点。
+		CLType CL=new CLType();
+		String key,findkey;
+		Scanner input=new Scanner(System.in);
+		while(true){
+			System.out.print("链表测试。先输入链表中的数据，格式为：关键字（学号） 姓名  年龄\n");
+
+			DATA2 nodeData=new DATA2();
+			nodeData.key=input.next();
+			if(nodeData.key.equals("0")){		//如果输入key为0，则退出
+				break;
+			}
+			else{
+				nodeData.name=input.next();
+				nodeData.age=input.nextInt();
+				head=CL.CLAddEnd(head, nodeData);			//调用追加结点的类方法，不断在后面添加结点
+				
+			}
+		}
+		CL.CLAllNode(head);				//显示这个链表的所有结点
+		
+		System.out.print("\n演示插入结点，输入插入位置的关键字：");
+		findkey=input.next();				//输入插入位置关键字
+		System.out.print("输入插入结点的数据（关键字  姓名  年龄）");
+		DATA2 nodeData=new DATA2();
+		nodeData.key=input.next();
+		nodeData.name=input.next();
+		nodeData.age=input.nextInt();				//输入插入结点数据
+		head=CL.CLInsertNode(head, findkey, nodeData);		//调用插入函数
+		CL.CLAllNode(head);							//显示所有结点
+		
+		System.out.print("\n演示删除结点，输入要删除的关键字");
+		
+		key=input.next();				//输入删除结点的关键字
+		CL.CLDeleteNode(head,key);		//调用删除结点的方法
+		CL.CLAllNode(head);				//显示所有结点
+		
+		System.out.print("\n演示在链表中的查找，输入查找的关键字：");
+		key=input.next();
+		node=CL.CLFindNode(head, findkey);			//调用查找方法，返回找到的结点
+		if(node!=null){
+			nodeData=node.nodeData;
+			System.out.printf("关键字%s对应的结点为(%s,%s,%d)\n",key,nodeData.key,nodeData.name,nodeData.age);
+			
+		}
+		else{
+			System.out.printf("在链表中未找到关键字为%s的结点！\n",key);
+		}
+		
+	}
+
+}

@@ -1,0 +1,119 @@
+/*
+    栈 链式存储结构实现
+    第一个结构体是每一个节点元素, 类似于链表 
+    第二个结构体是用个指针top指向链表的尾部 
+    
+    
+	a.data，a是一个结构体变量。a->data，a是一个指针变量
+	LinkStackPtr是一个指针类型变量
+*/
+#include<stdio.h>
+#include<stdlib.h>
+#define OK 1
+#define ERROR 0
+
+typedef int SElemType;
+typedef int Status;
+//栈中的节点 
+typedef struct StackNode{
+    SElemType data; 
+    struct StackNode *next; 
+} StackNode, *LinkStackPtr;
+//专门用来指示整个栈以及保存栈信息 
+typedef struct LinkStack{
+    LinkStackPtr top;
+    int count;
+} LinkStack;
+//初始化栈
+Status initStack(LinkStack *S){
+	LinkStackPtr p;
+	//malloc返回一个指向这块空间起始地址的void*
+	p=(LinkStackPtr)malloc(sizeof(StackNode));
+	p->next=NULL;//把该结点初始化 
+	S->top=p;//把链表 的头指针指向栈顶 
+	S->count=0;
+	return OK;
+}
+//判断栈是否为空
+Status StackEmpty(LinkStack S){
+	if(S.count == 0){
+		return OK;//为null
+	}else{
+		return ERROR;
+	}
+}
+int getLength(LinkStack S) {
+		return S.count;
+}
+//入栈 插入元素e
+Status push(LinkStack *S,SElemType e){
+	LinkStackPtr s = (LinkStackPtr)malloc(sizeof(StackNode));
+	s->data=e;
+	s->next=S->top;//必须先把栈顶指针给到新节点的直接后继 ，不然一会位置错误 
+	S->top=s;//我们都是操作头节点的，也就是栈顶节点，所以把新的节点s给到栈顶指针 
+	S->count++;
+	return OK;
+}
+//出栈,删除栈顶元素 用e返回出栈的值
+Status pop(LinkStack *S,SElemType *e){
+	//判空 
+	if(StackEmpty(*S)){
+		return ERROR;
+	}
+	*e=S->top->data;
+	LinkStackPtr p;//为了删除节点
+	p=S->top;//将栈顶结点赋值给p ，先拿到它的地址，出栈后再利用此地址删除节点 
+	S->top=S->top->next;//栈顶指向下一个结点 
+	free(p);//释放结点p
+	S->count--;
+	return OK; 
+}
+//遍历栈
+void stackTraverse(LinkStack S){
+	if(S.count==0){
+		 printf("栈为空\n");
+	}else{
+		LinkStackPtr p;//一个指针变量，所以只能给指针变量咯 
+		p=S.top;
+		while(p->next){//为什么根据这个遍历？？因为每个结点都有指针域，用此来判是否继续 
+			printf("%d ",p->data);
+			p=p->next;
+		}
+	}
+}
+int main(void){
+    LinkStack S;
+    SElemType e; 
+    initStack(&S);
+    printf("\n 1.初始化栈 \n 2.遍历栈 \n 3.入栈 \n 4.出栈 \n 0.退出\n");
+    int option = 1, value;
+    while(option){
+        scanf("%d",&option);
+        switch(option){
+            case 1:
+                initStack(&S);
+                break;
+            case 2:
+                stackTraverse(S);
+                break;
+            case 3:
+                printf("请输入要入栈的数据\n");
+                scanf("%d",&e);
+                push(&S, e); 
+                stackTraverse(S);
+                break;
+            case 4:
+                value = pop(&S, &e);
+                if(value == 0){
+                    printf("没有可用的元素可以出栈\n");
+                }else{
+                    printf("出栈的元素是:%d\n",e);
+                } 
+                break;
+            case 0:
+                return OK;
+        }
+        printf("栈长度：%d",getLength(S));
+    }
+    return OK;
+}

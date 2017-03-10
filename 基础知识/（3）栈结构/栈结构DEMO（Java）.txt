@@ -1,0 +1,114 @@
+package stacklist;
+import java.util.Scanner;
+
+//顺序栈结构的实现
+
+
+class DATA3{
+	String name;
+	int age;
+}
+class StackType{
+	static final int MAXLEN=50;					//定义栈的大小
+	DATA3[]data=new DATA3[MAXLEN+1];			//用数组实现存储数据元素
+	int top;									//栈顶标志，始终标志栈顶
+	
+	StackType STInit(){						//初始化栈大小。栈名就是指向栈顶的地址
+		StackType p;
+		if((p=new StackType())!=null){			//申请栈内存
+			p.top=-1;							//设置栈顶为0
+			return p;							//返回指向栈顶的引用
+		}
+		return null;							//申请失败返回null
+	}
+	
+	boolean STIsEmpty(StackType s){				//判断栈是否为空
+		boolean t;								//如果是空栈则表示栈没有数据，可以进行入栈操作，但不可进行出栈操作
+		t=(s.top==-1);
+		return t;
+	}
+	
+	boolean STIsFull(StackType s){				//判断栈是否已满
+		boolean t;								//如果是满栈，泽表示该栈结构没有多余的空间来保存额外的数据，此时不可进行入栈，但可以出栈
+		t=(s.top==MAXLEN);
+		return t;
+	}
+	
+	void STClear(StackType s){					//清空栈。
+		s.top=-1;							//输入参数s是一个指向操作的栈的引用（对象的引用）。在程序中，将栈顶top设置为0，表示执行清空栈操作
+	}
+	
+	void STFree(StackType s){				//释放栈所占用的空间。其实就是把对象给至null，内存机制就回收他
+		if(s!=null){											
+			s=null;
+		}
+	}
+	
+	//入栈操作Push
+	void PushST(StackType s,DATA3 data){
+		if((s.top+1)>MAXLEN){					//先判断栈顶top，如果top大于等于SIZE，则表示溢出
+			System.out.print("栈溢出！\n");			//设置top=top+1（栈顶引用加1，指向入栈地址）
+		}
+		s.top++;
+		s.data[s.top]=data;			//元素入栈
+	}
+	
+	//出栈操作pop
+	DATA3 PopST(StackType s){					
+		if(s.top==-1){								//判断栈顶top，如果top为0，则表示为空栈，进行出错处理。
+													//将栈顶引用top所指位置的元素返回，设置top=top-1，也就是使用栈顶引用减1，指向栈的下一个元素，原来栈顶元素被弹出
+			System.out.print("栈为空！\n");				
+			System.exit(0);
+		}
+		DATA3 data=s.data[s.top];
+		s.top--;
+		return (data);				//利用栈顶top来标记，使top-1，然后返回这个要出栈的结点。而在执行完后，因为是后--的，所以本来的栈表就减去了栈顶的结点，所以就作出这样的出栈动作啦
+	}
+	
+	//读取栈顶数据
+	DATA3 PeekST(StackType s){				//由于栈结构只能在一段进行操作，所以读取操作就是读取栈顶的结点数据
+		if(s.top==-1){						
+			System.out.print("栈为空！\n");
+			System.out.print(0);
+		}
+		return (s.data[s.top]);				//方法返回值是一个DATA3类型的数据，返回值是栈顶的数据元素（栈顶结点）
+	}
+	
+	
+	
+}
+public class Stacklist {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		StackType st=new StackType();				//就是初始化啦
+		DATA3 data1=new DATA3();
+		
+		StackType stack=st.STInit();			//初始化栈
+		Scanner input=new Scanner(System.in);
+		System.out.print("入栈操作\n");
+		while(true){
+			System.out.print("输入姓名 年龄，从进行入栈操作");
+			DATA3 data=new DATA3();
+			data.name=input.next();
+			if(data.name.equals("0")){
+				break;							//若名字输入为0，则退出
+			}else{
+				data.age=input.nextInt();			//若不为0，则继续输入年龄从而入栈
+				st.PushST(stack, data);
+			}
+		}
+		String temp="1";
+		temp=input.next();
+		while(!temp.equals("0")){		
+			System.out.print("出栈操作：按任意非0键进行出栈操作：");
+			data1=st.PopST(stack);		//使用出栈的方法，出栈一个	
+			System.out.printf("出栈的数据是(%s,%d)\n",data1.name,data1.age);		//打印出栈结点			
+			temp=input.next();			//然后再次输入选择是否出栈，0不出栈，非0出栈
+			
+		}
+		System.out.print("测试结束");
+		st.STFree(st);				//释放栈所占用的空间
+	}
+
+}

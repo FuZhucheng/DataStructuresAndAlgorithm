@@ -1,0 +1,95 @@
+package queuelist;
+
+public class CircleQueueQueue {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		CircleQueue queue = new CircleQueue();
+		queue.append("a");
+		queue.append("b");
+		queue.append("c");
+		queue.append("d");
+		queue.append("e");
+		queue.append("f");
+
+		System.out.println("头部数据：" + queue.getHead());
+		queue.delete();
+		System.out.println("头部数据：" + queue.getHead());
+		queue.delete();
+		System.out.println("头部数据：" + queue.getHead());
+		queue.append("g");
+
+		while (!queue.isEmpty()) {
+			System.out.println(queue.delete());
+		}
+	}
+
+}
+
+// tail可能比head大，也可能比head小，所以我们必须处理好这个关系！！那就是巧妙利用取余！
+class CircleQueue implements Queue{
+	static final int defaultSize = 10; // 默认队列的长度
+	int head;
+	int tail;
+	int count;// 统计元素个数的计数器
+	int maxSize; // 队的最大长度
+	Object[] queue; // 队列
+
+	public CircleQueue() {
+		init(defaultSize);
+	}
+
+	public void init(int size) {
+		maxSize = size;
+		head = tail = 0;
+		count = 0;
+		queue = new Object[size];
+	}
+
+	// 插入队列
+	@Override
+	public void append(Object obj) {
+		//这里打印队列已满，只是为了说明一下而已！！！还是会继续用覆盖去存储！！
+		if (count > 0 && head == tail) {
+			System.out.println("队列已满！！");
+		}
+			
+		queue[tail] = obj;
+		// 这样做的意思是：如果(tail+1)%maxSize与head所指示的是相同位置，则说明队列已满。
+		// 因此，我们不断把指针往后移动一个位置，到最后就转到数组头部。
+		tail = (tail + 1) % maxSize;
+		count++;
+
+	}
+
+	// 删除队头结点：
+	@Override
+	public Object delete() {
+		if (isEmpty()) {
+			System.out.println("队列为空！！");
+		}
+		Object obj = queue[head];
+		head = (head + 1) % maxSize;// 将head指针往后移动一个位置，如果到了最后了就转到数组头部。
+		count--;
+		return obj;
+	}
+
+	// 拿到队列的头
+	@Override
+	public Object getHead() {
+		if (isEmpty() == true) {
+			System.out.println("队列为空！！");
+			return null;
+		} else {
+			return queue[head];
+		}
+
+	}
+
+	// 判空
+	@Override
+	public boolean isEmpty() {
+		return count == 0;
+		// 还有一个计算长度的方法：(tail-head+maxSize)%maxSize
+	}
+}
