@@ -1,0 +1,90 @@
+### 树的遍历的多种形式是我们必须要掌握的：，以下会一一罗列主要遍历方式
+***
+### 显示结点：
+```
+void treeNodeData(Tree p){
+	System.out.println("%s",p.data);
+}
+```
+### 先序遍历：
+```
+//先序遍历：首先访问根结点然后遍历左子树，最后遍历右子树。在遍历左、右子树时，仍然先访问根结点，然后遍历左子树，最后遍历右子树，如果二叉树为空则返回。按递归的思路来遍历整个二叉树
+	//这里的treeNode为我二叉树根结点
+	void DLRTree(CBTType treeNode){
+		if(treeNode!=null){
+			TreeNodeData(treeNode);				//显示结点的数据
+			DLRTree(treeNode.left);				//采用递归思想！！！！！。本方法调用本方法自身。此递归出口就是在不断遍历时，直到一个子树结点为空。
+			DLRTree(treeNode.right);			//递归前进段是：一开始根结点的左子树结点不为空，右子树结点也不为空。如果不为空，就会用子树结点替换掉根结点。
+		}
+	}
+```
+### 中序遍历
+```
+//中序遍历:首先遍历左子树，然后访问根结点，最后遍历右子树。在遍历左、右子树时，仍然先遍历左子树，再访问根结点，最后遍历右子树
+	void LDRTree(CBTType treeNode){
+		if(treeNode!=null){
+			LDRTree(treeNode.left);				//中序遍历左子树
+			TreeNodeData(treeNode);				//显示结点数据	
+			LDRTree(treeNode.right);			//中序遍历右子树
+		}
+	}
+```
+### 后序遍历：
+```
+//后序遍历：首先遍历左子树，然后遍历右子树，最后访问根结点，在遍历左、右子树时，仍然先遍历左子树，然后遍历右子树，最后遍历根结点。
+	// treeNode为需要遍历的二叉树根结点
+	void LRDTree(CBTType treeNode){
+		if(treeNode!=null){
+			LRDTree(treeNode.left);				//后序遍历左子树		
+			LRDTree(treeNode.right);			//后序遍历右子树
+			TreeNodeData(treeNode);				//显示结点数据
+		}
+	}
+```
+### 层序遍历：分别给出顺序树的层遍历以及链式树的层遍历
+#### 顺序树的层遍历:
+```
+//按层遍历二叉树（最直观二等遍历算法）：处理第一层即根结点，再处理第一层根结点的左右子树结点（即系第二层）
+	//treeNode为需要遍历的二叉树根结点。处理时，先从根结点开始，将每层的结点放进队列。
+	void LevelTree(CBTType treeNode){
+		CBTType p;
+		CBTType[] q=new CBTType[MAXLEN];			//定义个一个顺序队列（循环队列）
+		int head=0,tail=0;							//队头队尾。tail指向的是下一个可存结点的位置。
+		
+		if(treeNode!=null){						//如果二叉树不为空
+							
+			q[tail]=treeNode;					//将二叉树根引用进队列。意思是：因为结点存在，所以把他放进一个数组
+			tail=(tail+1)%MAXLEN;		//我们不断把指针往后移动一个位置，到最后就转到数组头部
+		}
+		while(head!=tail){	
+			p=q[head];					//获取队首元素				
+			TreeNodeData(p);					//处理队首元素
+			head=(head+1)%MAXLEN;				//出队的时候，头指针就加1，不断把指针往后移动一个位置，到最后就转到数组头部
+			
+			if(p.left!=null){
+				q[tail]=p.left;					//如果该结点存在于它的左子树结点就把他放进队列。将左子树结点引进队列。此时第一轮循环是：左子树结点存在，取余得到序号，所以放进队列中保存。
+				tail=(tail+1)%MAXLEN;			//树的左子树结点进入队列后，tail就往后移动。第一次循环时意思就是：头结点的左子树结点存在，（tail+1）%MAXLEN为2，存在，所以第一轮左子树结点为序号2
+								
+			}
+			if(p.right!=null){					//如果该结点存在它的右子树结点
+				q[tail]=p.right;				//将右子树结点引进队列。此时第一轮循环是：右子树结点存在，取余得到序号，所以放进队列中保存。
+				tail=(tail+1)%MAXLEN;			//树的右子树结点进入队列后，tail就往后移动。第一次循环时意思就是：头结点的右子树结点存在，（tail+1）%MAXLEN为2，存在，所以第一轮右子树结点为序号3
+								
+			}
+		}		
+	}
+```
+### 链式树的层遍历:因为使用的是jdk提供的一个链表类，它的一个接口List意味着它可以使用队列形式。
+```
+public static void levelTree(Node node){  
+        if(node==null)return;  
+        Queue<Node> q=new LinkedList<Node>();  
+        q.add(node);  //将根节点入队
+        while(!q.isEmpty()){  
+            Node temp =  q.poll();  //出队队头元素并访问 
+            System.out.println(temp.value);  
+            if(temp.left!=null)q.add(temp.left);  //如果当前节点的左节点不为空入队 
+            if(temp.right!=null)q.add(temp.right);  //如果当前节点的右节点不为空，把右节点入队
+        }  
+    }  
+```
