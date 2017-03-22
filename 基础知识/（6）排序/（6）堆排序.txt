@@ -1,0 +1,103 @@
+package heapSort;
+
+//堆调整。。这个调整是为了调整个大根堆出来，将元素array[k]自下往上逐步调整树形结构
+/*
+ * 一般都用数组来表示堆，i结点的父结点下标就为(i – 1) / 2。
+ * 它的左右子结点下标分别为2 * i + 1和2 * i + 2。如第0个结点左右子结点下标分别为1和2。
+ */
+public class HeapSortTest {
+	// 调整树的节点顺序，在建堆的时候进行了规范性的排序
+	 //将元素array[k]自下往上逐步调整树形结构
+	/*
+	 * 调整的目的是啥？？大根堆目的就是把最大的那个数弄到最上面去，小根堆就反过来咯
+	 */
+	public void HeapAdjust(int[] array, int parent, int length) {
+		int temp = array[parent];// temp保存当前父结点
+		int child = 2 * parent + 1; // 先获取左孩子
+		
+		while (child < length) {//child为初始化为节点parent的左孩子，沿节点较大的子节点向下调整
+			// 取节点较大的子节点的下标，如果有右孩子结点，并且右孩子结点的值大于左孩子结点，则选取右孩子结点，就是找一个最大的节点出来
+			if (child + 1 < length && array[child] < array[child + 1]) {
+				child++;//如果节点的右孩子>左孩子，则取右孩子节点的下标
+			}
+
+			// 如果父结点parent的值已经大于他自己的孩子结点的值，则直接结束，调整结束
+			if (temp >= array[child]){
+				break;
+			}else{
+
+				// 找到最大的孩子节点（比父结点还大的）,把孩子结点的值赋给父结点
+				array[parent] = array[child];
+
+				// 选取孩子结点的左孩子结点,继续向下筛选
+				parent = child;//把父结点的指向往下传递给他的孩子，以便继续向下调整，进行大根堆调整，把大数丢上面去。
+				child = 2 * child + 1;
+			}
+			System.out.format("建堆调整过程的细节(1)    ");
+			printPart(array, 0, array.length - 1);
+
+		}
+		System.out.println("array[parent]  ："+array[parent]);
+		System.out.println("temp  ："+temp);
+
+		array[parent] = temp;//被调整的结点的值放入最终位置
+		
+		System.out.println("array[parent] 后 ："+array[parent]);
+		System.out.println("temp 后 ："+temp);
+		System.out.format("建堆调整过程的细节(2)    ");
+		printPart(array, 0, array.length - 1);
+		System.out.format("-------------------------------  \n ");
+
+
+	}
+
+	public void heapSort(int[] list) {
+		// **建堆**  循环建立初始堆，把最大的放在堆顶
+		//从最后一个节点array.length-1的父节点（array.length-1-1）/2开始，直到根节点0，反复调整堆
+		//没有减2的情况
+
+		for (int i = (list.length-2) / 2; i >= 0; i--) {
+			HeapAdjust(list, i, list.length - 1);
+		}
+
+		System.out.format("建堆调整过了的    ");
+		printPart(list, 0, list.length - 1);
+		// **堆排序**：进行n-1次循环，完成排序
+		for (int i = list.length - 1; i > 0; i--) {
+			// 最后一个元素和第一个元素进行交换
+			int temp = list[i];
+			list[i] = list[0];
+			list[0] = temp;
+			// 筛选 R[0] 结点，得到i-1个结点的堆
+			System.out.format("第 %d 趟前的交换: \t", list.length - i);
+			printPart(list, 0, list.length - 1);
+			HeapAdjust(list, 0, i);
+			System.out.format("第 %d 趟: \t", list.length - i);
+			printPart(list, 0, list.length - 1);
+		}
+	}
+
+	// 打印序列
+	public void printPart(int[] list, int begin, int end) {
+		for (int i = 0; i < begin; i++) {
+			System.out.print("\t");
+		}
+		for (int i = begin; i <= end; i++) {
+			System.out.print(list[i] + "\t");
+		}
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// 初始化一个序列
+		int[] array = { 1, 3, 4, 5, 2, 6, 9, 7, 8, 0 };
+		// 调用快速排序方法
+		HeapSortTest heap = new HeapSortTest();
+		System.out.print("排序前:\t");
+		heap.printPart(array, 0, array.length - 1);
+		heap.heapSort(array);
+		System.out.print("排序后:\t");
+		heap.printPart(array, 0, array.length - 1);
+	}
+}
