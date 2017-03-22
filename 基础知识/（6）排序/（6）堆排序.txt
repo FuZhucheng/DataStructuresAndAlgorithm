@@ -6,10 +6,9 @@ package heapSort;
  * 它的左右子结点下标分别为2 * i + 1和2 * i + 2。如第0个结点左右子结点下标分别为1和2。
  */
 public class HeapSortTest {
-	// 调整树的节点顺序，在建堆的时候进行了规范性的排序
-	 //将元素array[k]自下往上逐步调整树形结构
 	/*
 	 * 调整的目的是啥？？大根堆目的就是把最大的那个数弄到最上面去，小根堆就反过来咯
+	 * 将元素array[k]自下往上逐步调整树形结构
 	 */
 	public void HeapAdjust(int[] array, int parent, int length) {
 		int temp = array[parent];// temp保存当前父结点
@@ -54,8 +53,6 @@ public class HeapSortTest {
 	public void heapSort(int[] list) {
 		// **建堆**  循环建立初始堆，把最大的放在堆顶
 		//从最后一个节点array.length-1的父节点（array.length-1-1）/2开始，直到根节点0，反复调整堆
-		//没有减2的情况
-
 		for (int i = (list.length-2) / 2; i >= 0; i--) {
 			HeapAdjust(list, i, list.length - 1);
 		}
