@@ -68,6 +68,9 @@ public class MergeSortTest {
         int i = 0;
 
         // 归并gap长度的两个相邻子表
+        	//i+2*gap-1  其实代表的是数组的最后一位，不过是用这个形式表示而已
+        	//i+2*gap-1 其实是每次分组后的两组中的最后一个元素位置
+        	//i + gap-1 其实是每次分组后的两组中的第一组的末尾元素位置
         for (i = 0; i + 2 * gap - 1 < length; i = i + 2 * gap) {
             Merge(array, i, i + gap - 1, i + 2 * gap - 1);
             System.out.println("每次分隔好数组后，一个个地合并： ");
