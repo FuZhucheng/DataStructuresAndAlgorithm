@@ -1,0 +1,43 @@
+package com.fuzhu.array;
+
+import java.util.PriorityQueue;
+
+/**
+ * Created by ${符柱成} on 2017/3/26.
+ */
+/*
+    核心思路：有大根堆与小根堆两种
+    小根堆思路：构建一个k大小的小根堆，把数组的数全部装进去，边装边比较，大的始终会被丢到下面，而最小的会被放到堆顶！！所以装完之后，我们就可以确保，第k大的在小根堆堆顶。
+    大根堆思路：构建一个k大小的大根堆，把数组的数全部装进去，边装边比较，小的始终会被丢到下面，而每次放数的时候，都会调整把大数丢到最上面。所以装完之后，我们就可以确保，第k大的在大根堆堆顶了。
+ */
+public class HeapSearchNumData {
+    public static int findLeast(int[] nums, int k) {
+        PriorityQueue<Integer> q = new PriorityQueue<Integer>(k);//一个基于优先级堆的极大优先级队列
+        for (int i : nums) {
+            q.offer(i);//把数丢进堆里自动调整
+
+            if (q.size() > k) {
+                q.poll();//检索并移除此队列的头，也就是把堆顶的那个丢出去。
+            }
+        }
+
+        return q.peek();//单纯检查，不移除
+    }
+    public static void main(String[] args) {
+        int[] array = {
+                9, 1, 5, 3, 5, 2, 6, 8, 7, 6
+        };
+        int k=findLeast(array,4);
+        System.out.print(k);
+        System.out.print("\n");
+        for(int i=0;i<10;i++){
+            System.out.print(array[i]+" ");
+        }
+        System.out.print("\n");
+        for(int i=0;i<10;i++){
+            if (k==array[i]){
+                System.out.print(" 位置"+i+"  ");
+            }
+        }
+    }
+}

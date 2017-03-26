@@ -1,0 +1,23 @@
+package com.fuzhu.array;
+
+import java.util.PriorityQueue;
+
+/**
+ * Created by ${·ûÖù³É} on 2017/3/26.
+ */
+public class TestPriorityQueue {
+    public static void main(String[] args) {
+        PriorityQueue<Integer> pq = new PriorityQueue(3);
+        int[] array = {
+                9, 1, 5, 3, 5, 2, 6, 8, 7, 6
+        };
+        for (int i = 0; i < array.length; i++) {
+            pq.offer(array[i]);
+            System.out.print("\n");
+            Object[] a =pq.toArray();
+            for (int j =0;j<a.length;j++){
+                System.out.print(a[j]);
+            }
+        }
+    }
+}
