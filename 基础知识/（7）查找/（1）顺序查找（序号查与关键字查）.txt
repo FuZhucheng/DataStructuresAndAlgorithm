@@ -1,0 +1,43 @@
+package com.fuzhu;
+
+import java.util.Scanner;
+
+public class OrderSearch {
+
+	public static int findData(int[] arr, int n) {
+		if (n < 1 || n > arr.length) {
+			System.out.println("查找序号不正确！");
+		}
+		return arr[n];
+	}
+	public static int findDataByKey(int[] arr,int key){
+		if(key!=0){
+			for(int i=0;i<arr.length;i++){
+				if(arr[i]==key){
+					return  i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[] array = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		//序号查找
+//		System.out.println("请输入要查找的序号");
+//		Scanner input = new Scanner(System.in);
+//		int x = input.nextInt();
+//		int n = findData(array,x-1);
+//		System.out.println(n);
+		
+		//关键字查找
+		System.out.println("请输入要查找的关键字");
+		Scanner input1 = new Scanner(System.in);
+		int x1 = input1.nextInt();
+		int n1 = findDataByKey(array,x1);
+		System.out.println(n1+1);
+		
+	}
+
+}

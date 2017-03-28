@@ -1,0 +1,47 @@
+package com.fuzhu;
+
+import java.util.Scanner;
+/*
+ * 核心思想：
+ * 取中间值作为比较对象，若要查找的值与中间记录的关键字相同则查找成功；
+ * 若要查找的值小于中间记录的关键字，则在中间记录的左半区继续查找；
+ * 若要查找的值大于中间记录的关键字，则在中间记录的右半区继续查找。
+ * 不断重复，直至找到或没找到。
+ */
+
+public class BinarySearch {
+	//x为要查找的值
+	public static int Search(int[] arr,int x){
+		int low,mid,high;
+		low=0;
+		high=arr.length-1;
+		int time=0;
+		while(low<=high){
+			mid=(low+high)/2;
+			time++;
+			System.out.println("查了 "+(time)+" 次");
+			if(arr[mid]==x){
+				return mid;
+			}else if(arr[mid]>x){//小于中间记录的关键字，则在中间记录的左半区继续查找；
+				high=mid-1;
+			}else{//大于中间记录的关键字，则在中间记录的右半区继续查找。
+				low=mid+1;
+			}
+		}
+		return -1; //没找到
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[]array={1,2,3,4,5,6,7,8,9};
+		System.out.println("请输入要查找的数");
+		Scanner input = new Scanner(System.in);
+		int x= input.nextInt();
+		int n = Search(array,x);
+		if(n<0){
+			System.out.println("没找到这个数字");
+		}else{
+			System.out.println("数据位于第 "+(n+1)+" 位");
+		}
+	}
+
+}

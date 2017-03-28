@@ -1,0 +1,48 @@
+package com.fuzhu;
+
+import java.util.Scanner;
+/*
+ * 插值查找核心：
+ * 在一个有规律的排序好的数据列表，我们根据要查找的关键字key与查找表中最大最小记录的关键字比较后的查找方法。
+ * 
+ * 最好应用场景：
+ * 1.每一次对数据的访问与通常的指令相比，费用都是相当昂贵的。例如，待查找的表一定是在磁盘而非内存中，因而每一次比较都
+要进行磁盘访问。
+ * 2.数据不仅是已被排好序的，而且呈现均匀分布特征。
+ */
+public class InsertSearch {
+//x为要查找的值
+	public static int Search(int[] arr,int x){
+		int low,mid,high;
+		low=0;
+		high=arr.length-1;
+		int time=0;
+		while(low<=high){
+			mid=low+(high-low)*(x-arr[low])/(arr[high]-arr[low]);
+			time++;
+			System.out.println("查了 "+(time)+" 次");
+			if(arr[mid]==x){
+				return mid;
+			}else if(arr[mid]>x){//小于中间记录的关键字，则在中间记录的左半区继续查找；
+				high=mid-1;
+			}else{//大于中间记录的关键字，则在中间记录的右半区继续查找。
+				low=mid+1;
+			}
+		}
+		return -1; //没找到
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[]array={1,2,3,4,5,6,7,8,9};
+		System.out.println("请输入要查找的数");
+		Scanner input = new Scanner(System.in);
+		int x= input.nextInt();
+		int n = Search(array,x);
+		if(n<0){
+			System.out.println("没找到这个数字");
+		}else{
+			System.out.println("数据位于第 "+(n+1)+" 位");
+		}
+	}
+
+}

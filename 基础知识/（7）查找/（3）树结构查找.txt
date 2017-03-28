@@ -1,0 +1,22 @@
+	//查找操作。遍历二叉树每一个结点，逐个对比数据，当找到目标数据就返回该数据所在结点的引用
+	CBTType TreeFindNode(CBTType treeNode,String data){		//查找结点.treeNode为待查找的二叉树的根结点，输入参数data为待查找的结点数据。
+															//先判断根结点是否为空，然后向左右子树递归查找。如果当前结点的数据与查找数据相等，则返回当前结点的引用.
+		CBTType ptr;				//用一个假结点来的得到查询到的结点数据，遍历查询对比
+		if(treeNode==null){
+			return null;
+		}
+		else{										
+			if(treeNode.data.equals(data)){
+				return treeNode;
+			}
+			else {										//分别向左右子树递归查找
+				if((ptr=TreeFindNode(treeNode.left,data))!=null){		//找	左子树结点
+					return ptr;
+				}else if((ptr=TreeFindNode(treeNode.right,data))!=null){	//找右子树结点
+					return ptr;
+				}else{
+					return null;
+				}
+			}
+		}
+	}
