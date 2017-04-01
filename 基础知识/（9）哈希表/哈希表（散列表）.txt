@@ -1,0 +1,229 @@
+### 散列技术：在记录的存储位置和它的关键字之间建立一个确定的对应关系f，使得每个关键字key对应一个存储位置f(key)。既是存储方法也是查找方法。
+### 散列技术将记录存储在一块连续的存储空间中，这块连续存储空间称为散列表。
+#### 散列技术也不具备很多常规数据结构的能力。比如：1. 一个关键字对应多个记录的情况；2.也不适合于范围查找。
+#### 设计原则：
+##### 1.计算简单。保证存储和查找耗费少量时间。
+##### 2.散列地址分布均匀。进来让散列地址均匀分布在存储空间中，保证存储空间有效利用，并减少处理冲突耗费的时间。
+***
+### 构造散列函数的多个方法：
+#### 1.直接定址法：
+##### 如F(key)=a*key+b；这样一个线性的函数式的。
+##### 优点：简单均匀，也不会产生冲突，但要求是：事先知道关键字的分布情况。
+##### 适合查找表较小且连续的情况。
+#### 2.数字分析法：
+##### 使用关键字的一部分来计算散列存储位置的方法。
+##### 适合处理关键字位数比较大的情况。如果事先知道关键字的分布且关键字的若干位分布较均匀，即可考虑这方法。
+#### 3.平分取中法：
+##### 如：1234，平方为1522756，取中为227.
+##### 适合于不知道关键字的分布，而位数又不是很大的情况。
+#### 4.折叠法：
+##### 将关键字从左到右分割成位数相等的几部分，将几部分叠加求和。
+##### 适合事先不需要知道关键字的分布，适合关键字位数较多的情况。
+#### 5.除留余数法：
+##### 如f(key)=key mod p(p<=m)，mod是取模（取余）。
+##### 若散列表表长为m，通常p小于或等于表长（最好接近m）的最小质数或不包含小于20质因子的合数。
+### 构造设计散列函数的因素：
+#### 1.计算散列地址所需的时间
+#### 2.关键字的长度
+#### 3.散列表的大小
+#### 4.关键字的分布情况
+#### 5.记录查找的频率。
+*** 
+### 处理冲突的方法：（冲突是不可避免的！）
+#### （1）开放定址法：
+#### 即：一旦发生冲突，就去寻找下一个空的散列地址，只要散列表足够大，空的散列地址总能找到，并将记录存入。
+#### 开放定址法又分为：线性探测法、二次探测法和随机探测法。
+##### 线性探测法：就是冲突了就直接寻找判断它后面的一个位置是否空，空则插入，非空则继续找后一个。存在的问题：出现本来都不是同义词却需要争夺一个地址的情况（堆积）。
+##### 二次探测法：例子：
+##### 目的是为了不让关键字都聚集在某一块区域。
+![这里写图片描述](http://img.blog.csdn.net/20170401122151042?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+##### 随机探测法：
+##### 在冲突时，对于位移量di采用随机函数计算。
+#### （2）再散列函数法：
+##### 每当发生散列地址冲突时，就换一个散列函数计算。使得关键字不产生聚集，但也增加了计算时间。
+#### （3）链地址法：
+![这里写图片描述](http://img.blog.csdn.net/20170401124944321?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+##### 对于很可能造成冲突的散列函数来说，提供了绝不会出现 找不到地址的保障。但也带来查找时候的遍历单链表的性能损耗。
+#### （4）公共溢出区法：
+![这里写图片描述](http://img.blog.csdn.net/20170401125223822?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+##### 凡是冲突的都找一个公共溢出区去存放。查找的时候，对给定值通过散列函数计算出散列地址后，先与基本表的响应位置进行对比，如果相等则查找成功；如果不相等，则到溢出表去进行顺序查找。
+##### 对于基本表，有冲突的数据很少的情况下，公共溢出区的结构对查找性能是很高的。
+***
+## 哈希表经验总述：
+### （1）根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。
+##### 对比：数组的特点是：寻址容易，插入和删除困难；而链表的特点是：寻址困难，插入和删除容易。哈希则是一种寻址容易，插入删除也容易的数据结构。
+### （2）哈希的应用：
+#### 1.Hash主要用于信息安全领域中加密算法，它把一些不同长度的信息转化成杂乱的128位的编码,这些编码值叫做Hash值. 也可以说，Hash就是找到一种数据内容和数据存放地址之间的映射关系
+#### 2.查找：哈希表，又称为散列，是一种更加快捷的查找技术。我们之前的查找，都是这样一种思路：集合中拿出来一个元素，看看是否与我们要找的相等，如果不等，缩小范围，继续查找。而哈希表是完全另外一种思路：当我知道key值以后，我就可以直接计算出这个元素在集合中的位置，根本不需要一次又一次的查找！
+##### 举一个例子，假如我的数组A中，第i个元素里面装的key就是i，那么数字3肯定是在第3个位置，数字10肯定是在第10个位置。哈希表就是利用利用这种基本的思想，建立一个从key到位置的函数，然后进行直接计算查找。
+#### 3.Hash表在海量数据处理中有着广泛应用。查询速度非常的快，几乎是O(1)的时间复杂度.
+### （3）实现步骤：
+#### 当存储记录时，通过散列函数计算出记录的散列地址
+#### 当查找记录时，我们通过同样的是散列函数计算记录的散列地址，并按此散列地址访问该记录
+### （4）优缺点：
+#### 优点：不论哈希表中有多少数据，查找、插入、删除（有时包括删除）只需要接近常量的时间即0(1）的时间级。实际上，这只需要几条机器指令。
+#### 缺点：它是基于数组的，数组创建后难于扩展，某些哈希表被基本填满时，性能下降得非常严重，所以程序员必须要清楚表中将要存储多少数据（或者准备好定期地把数据转移到更大的哈希表中，这是个费时的过程）。
+### （5）查找性能分析：
+#### 1.散列函数是否均匀
+#### 2.处理冲突的方法
+#### 3.散列表的装填因子
+##### 装填因子a=填入表中的记录个数/散列表长度。a表示散列表的装满的程度。填入记录越多，a越大，产生冲突的可能性越大。
+## 实现：（使用除留余数法和线性探测法）
+### 哈希表结构：
+```
+private int manyItems;  //哈希表大小
+    private Object[] keys;  //键
+    private Object[] values;  //值
+    private boolean[] hasBeenUsed;//判断这个键是否存了数据value  
+}
+```
+### 初始化：
+```
+ public Table(int capacity){  
+        if(capacity <= 0){  
+            throw new IllegalArgumentException("Capacity is negative.");  
+        }  
+        keys = new Object[capacity];  
+        values =new Object[capacity];  
+        hasBeenUsed = new boolean[capacity];  
+    }  
+```
+### 判空
+```
+   /** 
+     * 判断表是否为空 
+     * @return 
+     */  
+    public boolean isEmpty(){  
+        return manyItems == 0;  
+    }  
+```
+### 清空表：
+```
+//保证线程安全
+    public synchronized void clear() {  
+        if(manyItems !=0){  
+            for(int i = 0;i < values.length;i++){  
+                keys[i]=null;  //把键、值、以及判占用标志都清空。
+                values[i]=null;  
+                hasBeenUsed[i]=false;  
+            }  
+            manyItems = 0;  //大小变0
+        }  
+    }  
+```
+### 判断是否存在指定的关键字 
+```
+ public boolean containsKey(Object key) {  
+          
+        return findIndex(key)!=-1;  
+    }  
+```
+### 获取关键字
+```
+    public Object get(Object key) {  
+        int index = findIndex(key);  
+        if(index!=-1){  
+            return values[index];  
+        }  
+        return null;  
+    } 
+```
+### 计算散列码：
+```
+/** 
+     * 获取散列码，大小不超过表的大小 
+     */  
+    public int hash(Object key){  
+    //返回的是存放在该values数组的位置
+    //其实就是返回key%length
+        return Math.abs(key.hashCode())%values.length;  
+    }  
+```
+### 把索引指向下一位
+```
+ public int nextIndex(int index){  
+        if(index+1 == values.length){  
+            return 0;  
+        }else{  
+            return index + 1;  
+        }  
+    } 
+```
+### 判断指定的位置是否已经被使用 
+```
+ /** 
+     * 判断指定的位置是否已经被使用 
+     */  
+    public boolean hasBeenUsed(int index){  
+        return hasBeenUsed[index];  
+    }  
+```
+### 根据key查找关键字：如果在表中找到了指定的关键字，返回指定关键字的索引。否则返回 -1.（没找到的时候） 
+```
+public int findIndex(Object key){  
+        int count = 0;  
+        int i = hash(key);  
+        while((count < values.length) && hasBeenUsed[i]){  
+            //分配的位置已经被使用，而且存在指定的关键字  
+            if(keys[i].equals(key)){  
+                return i;  
+            }  
+            //编辑遍历的次数，当全部元素都遍历完之后，退出遍历  
+            count++;  
+            i = nextIndex(i);  
+        }  
+        return -1;  
+    }  
+```
+### 返回该表中当前有多少对键值对。 
+```
+public int size() {  
+        return manyItems;  
+    } 
+```
+### 插入关键字进散列表：
+```
+public synchronized Object put(Object key, Object value) {  
+	int i = findIndex(hash(key)); //
+	Object temp = null;  
+	if(i != -1){  
+            //表中已经存在该关键字  
+            temp = values[i];  
+            values[i] = value;  //替换内容
+            //返回被替换的内容  
+            return temp;  
+    }else if(manyItems < values.length){ 
+	    //表中不存在该关键字且表未满  
+	    //返回的是存放在该keys数组的位置
+            i = hash(key);  
+       //检查散列码是否有冲突  
+            if(keys[i]!= null){  
+                //散列码有冲突，索引往后移一位
+                i = nextIndex(i);  
+            } 
+            keys[i] = key;  //强制赋值
+            values[i]= value;  
+            hasBeenUsed[i] = true;  
+            manyItems ++;  
+            return null; 
+    }else{  
+            //表已满  
+            throw new IllegalStateException("Table is full");  
+    } 
+```
+### 删除数据
+```
+public synchronized Object remove(Object key) {  
+        int index = findIndex(key);  //老套路，hash计算出位置先
+        Object result = null;  
+        if(index!=-1){  
+            result = values[index];  //不等空就拿暂存变量输出它
+            keys[index]= null;  //然后把三个值清空
+            values[index]= null;  
+            hasBeenUsed[index]=false;  
+            manyItems --;  
+        }  
+        return result;  
+    }  
+```
