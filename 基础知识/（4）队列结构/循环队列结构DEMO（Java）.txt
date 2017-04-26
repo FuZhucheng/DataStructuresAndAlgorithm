@@ -1,5 +1,15 @@
 package queuelist;
 
+/*
+循环队列的相关条件和公式：   
+队尾指针是rear,队头是front，其中QueueSize为循环队列的最大长度  
+1.队空条件：rear==front  
+2.队满条件：(rear+1) %QueueSIze==front  
+3.计算队列长度：（rear-front+QueueSize）%QueueSize  
+4.入队：（rear+1）%QueueSize  
+5.出队：（front+1）%QueueSize
+6.计算循环队列现在包含元素：队尾指针-队头指针+队列容量
+*/
 public class CircleQueueQueue {
 
 	public static void main(String[] args) {

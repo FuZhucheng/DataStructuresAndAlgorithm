@@ -1,0 +1,56 @@
+### （1）线性表中数据元素叫元素，树中数据元素叫结点，图中的数据元素叫顶点。
+### （2）图分无向图和有向图。无向图由顶点和边构成，有向图由顶点和弧构成（弧有弧尾和弧头之分）。
+#### 无向完全图--任意两个顶点之间都存在边。有N*(N-1)/2条边。
+#### 有向完全图--任意两个顶点之间存在方向互为相反的两条弧。有N*(N-1)条边
+### （3）图按边或弧的多少分稀疏图和稠密图。如果任意两个顶点之间都存在边叫完全图，有向的的叫有向完全图。
+### （4）无向图顶点 的边数叫度，有向图顶点分为入度和出度。
+#### 度：每个结点连了多少条边
+### （5）图上的边或弧上带权称为网。
+#### 权：图的边或弧相关的数（两顶点距离）。
+### （6）图中顶点间存在路径，两顶点存在路径说明是连通的。如果路径最终回到起始点称为环，当中不重复的叫简单路径。若“任意”两点是连通的，则图就是连通图，有向则称强连通图。图中有子图，若子图极大连通就是连通分量，有向的则称强连通分量。
+#### 路径长度就是从一个节点走到另一个节点所经过的边或弧的条数。
+#### 树的带权路径长度规定为所有叶子结点的带权路径长度之和，记为WPL。
+##### 图1不是连通图，图2是。
+![这里写图片描述](http://img.blog.csdn.net/20170424152234114?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 连通分量：（1）要是子图；（2）子图是连通的；（3）连通子图含有极大顶点数；（4）具有极大顶点数的连通子图包含依附于这些顶点的所有边。
+### （8）无向图中连通且n个顶点n-1条边叫生成树。有向图中一顶点入度为0其余顶点入度为1的叫有向树。一个有向图由若干棵有向树构成生成森林。
+#### 有向树：一个有向图恰有一个顶点的入度为0，其余顶点的入度均为。
+##### 图2和图3是图1有向图的生成森林。
+![这里写图片描述](http://img.blog.csdn.net/20170424152641120?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+### （9）邻接矩阵（存储方式）：用两个数组来表示图。一个一维数组存储顶点信息，一个二维数组（邻接矩阵）存储图中的边或弧的信息。
+##### 很适用于边数相对顶点较多的图
+#### 无向图邻接矩阵：
+#### 对角线为0说明不存在顶点到自身的边。
+![这里写图片描述](http://img.blog.csdn.net/20170424155048714?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 有向图邻接矩阵：
+![这里写图片描述](http://img.blog.csdn.net/20170424155225076?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 带权的有向图邻接矩阵：
+![这里写图片描述](http://img.blog.csdn.net/20170424155342172?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+##### 那个无限的符号是一个计算机允许的、大于所有边上权值的值。
+### （10）邻接表：一种数组与链表相结合的存储方式
+##### 很适用于边数相对顶点较少的图。
+#### 有邻接点才用链表连起来。
+#### 顶点表的各个结点由data和firstedge两个域表示。data是数据域，存储顶点信息，firstedge是指针域，指向边表的第一个结点。
+#### 边表结点由adjvex和next两个域组成。adjvex是邻接点域，存储某个顶点的邻接点在顶点表中的下标；next存储指向边表中下一个结点的指针。
+#### 无向图邻接表：
+![这里写图片描述](http://img.blog.csdn.net/20170424160054097?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 有向图邻接表：
+#### 以顶点为弧尾来存储边表，方便得出每个顶点的出度。（当然有时会换过来，如果是为了入度的话--逆邻接表）
+![这里写图片描述](http://img.blog.csdn.net/20170424162244494?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 有向图逆邻接表：
+#### 这样很容易得出某个顶点的入度或出度，判断两顶点是否存在弧。
+![这里写图片描述](http://img.blog.csdn.net/20170424162603468?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)![这里写图片描述](http://img.blog.csdn.net/20170424162615983?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+#### 带权值的有向图邻接表：
+![这里写图片描述](http://img.blog.csdn.net/20170424163340868?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+### （11）十字链表：
+#### 把邻接表与逆邻接表结合起来。
+#### firstin表示入边表头指针，指向该顶点的入边表中第一个结点，firstout表示出边表头指针。
+#### tailvex指弧起点在顶点表的下标，headvex指弧重点在顶点表中的下标，headlink指入边表指针域，指向终点相同的下一条边，tailvex是指边表指针域，指向起点相同的下一条边。如果是网还可以增加一个weight域来存储权值。
+##### 此方式好处：讲邻接表和逆邻接表整合起来，既容易找到vi尾的弧，也容易找到vi头的弧，因此容易求出出度和入度。
+![这里写图片描述](http://img.blog.csdn.net/20170424170438302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+### （12）邻接多重表：
+#### 更关注边的操作时使用此结构。
+#### ivex和jvex是与某条边依附的两个顶点在顶点表中下标。ilink指向依附顶点ivex的下一条边，jlink指向依附顶点jvex的下一条边。
+![这里写图片描述](http://img.blog.csdn.net/20170424171759214?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+##### 开始连线：
+![这里写图片描述](http://img.blog.csdn.net/20170424171828460?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
