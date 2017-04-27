@@ -1,0 +1,153 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define OK 1
+#define ERROR 0
+
+typedef struct Node  
+{  
+    int data;  
+    struct Node *pNext;  
+}NODE, *pNODE;  
+//创建单向循环链表
+pNODE createList(void){
+ 	 pNODE pHead = (pNODE)malloc(sizeof(NODE));  
+  	pNODE pTail=NULL;
+  	if(pHead==NULL){
+  		printf("内存分配失败！\n"); 
+  	}
+  	pHead->data=0;
+  	pHead->pNext=pHead;//最后一个结点必须指向头结点，才是一个循环链表
+	pTail=pHead;
+	return  pHead;
+ }
+ //打印链表  
+void TraverseSgCcLinkList(pNODE pHead)  
+{  
+    pNODE pt = pHead->pNext;  
+  
+    printf("链表打印如：");  
+    while (pt != pHead)  
+    {  
+        printf("%d ", pt->data);  
+        pt = pt->pNext;  
+    }  
+    putchar('\n');  
+}  
+//判断链表是否为空  
+int IsEmptySgCcLinkList(pNODE pHead)  
+{  
+    if (pHead->pNext == pHead)  
+        return 1;  
+    else  
+        return 0;  
+}
+//计算链表长度  
+int GetLengthSgCcLinkList(pNODE pHead)  
+{  
+    int length = 0;  
+    pNODE pt = pHead->pNext;  
+  
+    while (pt != pHead)  
+    {  
+        length++;  
+        pt = pt->pNext;  
+    }  
+    return length;  
+}   
+//向链表中插入节点 
+int InsertEleSgCcLinkList(pNODE pHead, int pos, int data)  {
+	pNODE p_new=NULL;
+	p_new=(pNODE)malloc(sizeof(NODE));
+	int j=1;
+	while(j<pos){
+		pHead=pHead->pNext;
+		j++;
+	}
+	p_new->data=data;
+	p_new->pNext=pHead;
+	pHead->pNext = p_new;
+	return OK;
+	
+}
+//删除结点： 
+int DeleteEleSgCcLinkList(pNODE pHead, int pos)  {
+  pNODE pt =NULL;
+  int j=1;
+  while(j<pos){
+  	j++;
+  	pHead=pHead->pNext;	
+  }
+  pt=pHead->pNext;
+  pHead->pNext=pt->pNext;
+  free(pt);
+  return OK;
+}
+//删除整个链表，释放内存  
+void FreeMemory(pNODE *ppHead)  
+{  
+    pNODE pt = NULL;  
+  
+    while (*ppHead != NULL)  
+    {  
+        if (*ppHead == (*ppHead)->pNext) //如果只有头节点一个  
+        {  
+            free(*ppHead);  
+            *ppHead = NULL;  
+        }  
+        else                    //如果不止头节点一个  
+        {  
+            pt = (*ppHead)->pNext->pNext;  
+            free((*ppHead)->pNext);  
+            (*ppHead)->pNext = pt;  
+        }  
+    }  
+}  
+int main(void)  {
+	int flag = 0, length = 0;  
+    int position = 0, value = 0;  
+    pNODE head = NULL;  
+    head = createList();  
+  flag = IsEmptySgCcLinkList(head);  
+    if (flag)  
+        printf("单向循环链表为空！\n");  
+    else  
+    {  
+        length = GetLengthSgCcLinkList(head);  
+        printf("单向循环链表的长度为：%d\n", length);  
+        TraverseSgCcLinkList(head);  
+    }  
+    printf("请输入要插入节点的位置和元素值(两个数用空格隔开)：");  
+    scanf("%d %d", &position, &value);
+    flag = InsertEleSgCcLinkList(head, position, value);  
+    if (flag)  
+    {  
+        printf("插入节点成功！\n");  
+        TraverseSgCcLinkList(head);  
+    }   else  
+        printf("插入节点失败！\n"); 
+     flag = IsEmptySgCcLinkList(head);  
+    if (flag)  
+        printf("单向循环链表为空，不能进行删除操作！\n");  
+    else  
+    {  
+        printf("请输入要删除节点的位置：");  
+        scanf("%d", &position);  
+        flag = DeleteEleSgCcLinkList(head, position);  
+        if (flag)  
+        {  
+            printf("删除节点成功！\n");  
+            TraverseSgCcLinkList(head);  
+        }     
+        else  
+            printf("删除节点失败！\n");  
+    }  
+  
+    FreeMemory(&head);  
+    if (NULL == head)  
+        printf("已成功删除单向循环链表，释放内存完成！\n");  
+    else  
+        printf("删除单向循环链表失败，释放内存未完成！\n");  
+  
+    return 0;  
+}
