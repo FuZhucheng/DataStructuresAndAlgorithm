@@ -6,6 +6,9 @@
 
 
 //以下做法是：选择第一个记录的关键码作为轴值
+https://www.cnblogs.com/luchen927/archive/2012/02/29/2368070.html
+延后安排基准值，先右往左找小，再左往右找大
+
 public class QuickSort {
 
 	static final int SIZE=18;
@@ -31,7 +34,7 @@ public class QuickSort {
 		}
 	}
 	
-	/**		计算出一个基准数
+	/**		计算出一个基准数，这个是可应用于任何地方的。模块化的东西。
 	 * 
 	 * @param arr		这个传入的是待排序数组或者划分或的子序列数组
 	 * @param first		这个传入的是待排序数组或者划分或的子序列数组的起始下标
@@ -61,7 +64,7 @@ public class QuickSort {
 			}
 			arr[end]=arr[first];
 		}
-		arr[first]=pivot;			//当first和end会和，即找到本次递归的枢轴位置了
+		arr[first]=pivot;			//当first和end会和，即找到本次递归的枢轴位置了，此时first正是中心枢纽位置，这里是把基准数（arr[first]）归位
 		return first;
 		
 	}

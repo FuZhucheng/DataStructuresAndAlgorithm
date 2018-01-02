@@ -42,6 +42,14 @@ public class AVLNode {
 
 
 ## 多种失衡情况调整：
+```
+旋转的整体过程就是：
+1- a、b指针的调整
+2- a、b的子节点指针调整
+3- 旋转代码，就是a和b互相的指向
+4- a的父节点指针调整
+5- 重新计算平衡调整。
+```
 ### （1）LL型，左子树的左子节点
 ![这里写图片描述](http://img.blog.csdn.net/20170329121228143?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSmFja19fRnJvc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 ```

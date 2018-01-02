@@ -4,6 +4,12 @@ package heapSort;
 /*
  * 一般都用数组来表示堆，i结点的父结点下标就为(i – 1) / 2。
  * 它的左右子结点下标分别为2 * i + 1和2 * i + 2。如第0个结点左右子结点下标分别为1和2。
+
+
+https://www.cnblogs.com/chengxiao/p/6129630.html
+看上面这篇文章即可。
+调整模块只针对本结点与它往下的节点。所以需要外套循环才是从下往上从右到左地调整。
+另外要清楚 arr.length-1是指最后一个节点，它的父节点是arr.length/2-1
  */
 public class HeapSortTest {
 	/*

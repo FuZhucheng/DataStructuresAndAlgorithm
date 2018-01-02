@@ -1,0 +1,3 @@
+http://blog.csdn.net/elecjack/article/details/51019875
+
+注意：要分开三种情况去想，size大于1，size等于1，size小于1。分开去写情况代码。

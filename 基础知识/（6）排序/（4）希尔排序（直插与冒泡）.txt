@@ -8,6 +8,9 @@ package insertSort;
  * 效率是很高的，
 */
 //第一种和第二种只是不同的直接插入写法，本质一样
+
+http://blog.csdn.net/morewindows/article/details/6668714
+
 public class ShellSort {
 
 	static final int SIZE = 10;
